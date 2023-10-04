@@ -1,5 +1,5 @@
 <h1>CASE DASA </h1>
-```
+```mermaid
 classDiagram
     class Schedule{
         - id_agendamento : Long
