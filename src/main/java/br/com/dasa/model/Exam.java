@@ -10,12 +10,15 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Optional;
+
 @Entity(name = "exames")
 @Data
 @Getter
 @Setter
 public class Exam {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_exame;
     @NotEmpty
     private String nome_exame;
@@ -31,8 +34,12 @@ public class Exam {
         this.id_exame = examDTO.id_exame();
         this.nome_exame = examDTO.nome_exame();
         this.tipo_exame = examDTO.tipo_exame();
-        this.valor_exame = examDTO.valor_exame();
+        setValor_exame(checkTypeValue(tipo_exame));
     }
 
     public Exam() {}
+
+    public Double checkTypeValue(ExamEnum examEnum){
+        return examEnum.equals(ExamEnum.IMAGEM)?200.0:50.0;
+    }
 }

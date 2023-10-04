@@ -28,25 +28,29 @@ public class SchduleController {
         return ResponseEntity.ok(scheduleRepository.findAll());
     }
 
-    @PostMapping
-    @Transactional
-    public ResponseEntity<List<Exam>> createExam(@RequestBody @Valid ExamDTO exam){
-        examRepository.save(new Exam(exam));
-        return ResponseEntity.ok(examRepository.findAll());
+    @GetMapping("/{id_agendamento}")
+    public ResponseEntity<Optional<Schedule>> getById(@PathVariable @Valid Long id_agendamento){
+        return ResponseEntity.ok(scheduleRepository.findById(id_agendamento));
     }
 
-    @PostMapping("/dado")
+    @PostMapping("/{agendamento}")
     @Transactional
     public ResponseEntity<List<Schedule>> createSchedule(@RequestBody @Valid ScheduleDTO schedule){
         scheduleRepository.save(new Schedule(schedule));
         return ResponseEntity.ok(scheduleRepository.findAll());
     }
 
-    @PutMapping(name = "addInfo")
+    @PutMapping("/{id_agendamento}")
     @Transactional
-    public ResponseEntity<Optional<Schedule>> addExam(@RequestBody @Valid ExamDTO exame){
-        var examSchedule  = examRepository.getReferenceById(exame.id_agendamento().longValue());
-        exame.addExame(examSchedule);
-        return ResponseEntity.ok(scheduleRepository.findById(schedule.id_agendamento().longValue()));
+    public ResponseEntity<Optional<Schedule>> addExam(@PathVariable @RequestParam Long id_agendamento,@RequestBody ExamDTO exame){
+        var schedule = scheduleRepository.findById(id_agendamento).get();
+        schedule.addExame(addIntoExamList(exame));
+        schedule.setPagamento(schedule.updateTotalValue());
+        return ResponseEntity.ok(scheduleRepository.findById(id_agendamento));
+    }
+
+    public ExamDTO addIntoExamList(@RequestBody @Valid ExamDTO exam){
+        examRepository.save(new Exam(exam));
+        return exam;
     }
 }

@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Payment {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_pagamento;
     @NotNull
     private Double valor_total;
