@@ -1,5 +1,6 @@
 <h1>CASE DASA </h1>
-```mermaid
+``
+mermaid
 classDiagram
     class Schedule{
         - id_agendamento : Long
@@ -28,5 +29,4 @@ classDiagram
     }
     Schedule --> Exam
     Schedule --> Payment
-
 ```
