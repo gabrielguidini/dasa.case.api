@@ -1,5 +1,6 @@
 package br.com.dasa;
 
+import br.com.dasa.controller.SchduleController;
 import br.com.dasa.dto.ExamDTO;
 import br.com.dasa.dto.PaymentDTO;
 import br.com.dasa.dto.ScheduleDTO;
@@ -10,6 +11,7 @@ import br.com.dasa.model.enums.ExamEnum;
 import br.com.dasa.model.enums.PaymentEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
@@ -36,5 +38,4 @@ class ApiApplicationTests {
 		//asert
 		Assertions.assertEquals(schedule.getPagamento(),expect);
 	}
-
 }

@@ -41,6 +41,10 @@ public class Schedule {
         exames.add(new Exam(exame));
     }
 
+    public void deleteExame(ExamDTO exame){
+        exames.remove(new Exam(exame));
+    }
+
     public Payment updateTotalValue() {
         double i = 0;
         for (Exam exam:exames) {

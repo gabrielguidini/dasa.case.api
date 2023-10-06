@@ -8,14 +8,13 @@ import br.com.dasa.repository.ExamRepository;
 import br.com.dasa.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,13 +54,32 @@ public class SchduleController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }else{
             schedule.addExame(addIntoExamList(exame));
-            schedule.setPagamento(schedule.updateTotalValue());
+            updateValue(schedule);
             return ResponseEntity.created(uri).body(scheduleRepository.findById(id_agendamento));
         }
     }
 
-    public ExamDTO addIntoExamList(@RequestBody @Valid ExamDTO exam){
+    @DeleteMapping("/{id_agendamento}")
+    @Transactional
+    public ResponseEntity deleteExam(@PathVariable @RequestParam Long id_agendamento,@RequestBody ExamDTO exame, UriComponentsBuilder uriBuilder){
+        var schedule = scheduleRepository.findById(id_agendamento).get();
+        var uri = uriBuilder.path("/dasa/{id_agendamento}").buildAndExpand (scheduleRepository.findById(id_agendamento).get()).toUri();
+        if(examRepository.existsById(exame.id_exame())){
+            schedule.deleteExame(exame);
+            examRepository.deleteById(new Exam(exame).getId_exame());
+            updateValue(schedule);
+            return ResponseEntity.created(uri).body(scheduleRepository.findById(id_agendamento));
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private ExamDTO addIntoExamList(@RequestBody @Valid ExamDTO exam){
         examRepository.save(new Exam(exam));
         return exam;
+    }
+
+    private void updateValue(Schedule schedule){
+        schedule.setPagamento(schedule.updateTotalValue());
     }
 }
