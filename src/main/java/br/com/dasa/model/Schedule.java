@@ -46,8 +46,7 @@ public class Schedule {
     }
 
     public Payment updateTotalValue() {
-        double result = exames.stream().map(Exam::getValor_exame).reduce(0d,(exam1, exam2) ->exam1+exam2);
-        pagamento.setValor_total(result);
-        return pagamento;
+        pagamento.setValor_total(exames.stream().map(Exam::getValor_exame).reduce(0d,(exam1, exam2) ->exam1+exam2));
+        return pagamento.setValor_total();
     }
 }
