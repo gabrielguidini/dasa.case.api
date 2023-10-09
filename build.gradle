@@ -4,6 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.3'
 }
 
+
 group = 'br.com.dasa'
 version = '0.0.1-SNAPSHOT'
 
@@ -30,6 +31,11 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jar{
+	archiveBaseName = 'case.dasa'
+	archiveVersion = '0.2'
 }
 
 tasks.named('test') {

@@ -40,7 +40,7 @@ public class SchduleController {
 
     @PostMapping()
     @Transactional
-    public ResponseEntity createSchedule(@RequestBody @Valid ScheduleDTO schedule, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<Schedule> createSchedule(@RequestBody @Valid ScheduleDTO schedule, UriComponentsBuilder uriBuilder){
         var uri =uriBuilder.path("/dasa").buildAndExpand(scheduleRepository.save(new Schedule(schedule))).toUri();
         return ResponseEntity.created(uri).body(new Schedule(schedule));
     }
