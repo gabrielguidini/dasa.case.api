@@ -11,23 +11,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity(name = "pagamento")
-@Data
 @Getter
 @Setter
 public class Payment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_pagamento;
+    private Long idPagamento;
     @NotNull
-    private Double valor_total;
+    private Double valorTotal;
     @NotEmpty
     @Enumerated(EnumType.STRING)
-    private PaymentEnum tipo_pagamento;
+    private PaymentEnum tipoPagamento;
 
     @JsonCreator
     public Payment(PaymentDTO paymentDTO){
-        this.id_pagamento = paymentDTO.id_pagamento();
-        this.tipo_pagamento = paymentDTO.tipo_pagamento();
-        this.valor_total = paymentDTO.valor_total();
+        this.idPagamento = paymentDTO.getIdPagamento();
+        this.tipoPagamento = paymentDTO.getTipoPagamento();
+        this.valorTotal = paymentDTO.getValorTotal();
     }
 
     public Payment(){}

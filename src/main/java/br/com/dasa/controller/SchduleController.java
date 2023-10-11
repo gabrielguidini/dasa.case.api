@@ -2,15 +2,13 @@ package br.com.dasa.controller;
 
 import br.com.dasa.dto.ExamDTO;
 import br.com.dasa.dto.ScheduleDTO;
-import br.com.dasa.model.Exam;
 import br.com.dasa.model.Schedule;
-import br.com.dasa.repository.ExamRepository;
-import br.com.dasa.repository.ScheduleRepository;
+import br.com.dasa.service.ExamService;
+import br.com.dasa.service.ScheduleService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,64 +20,35 @@ import java.util.Optional;
 @RequestMapping("/dasa")
 public class SchduleController {
     @Autowired
-    private ScheduleRepository scheduleRepository;
+    private ScheduleService scheduleService;
     @Autowired
-    private ExamRepository examRepository;
+    private ExamService examService;
 
     @GetMapping
     public ResponseEntity<List<Schedule>> getAllSchedules(){
-        return scheduleRepository.findAll().isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                :ResponseEntity.ok(scheduleRepository.findAll()) ;
+        return scheduleService.getAllSchedules();
     }
 
     @GetMapping("/{id_agendamento}")
     public ResponseEntity<Optional<Schedule>> getById(@PathVariable @Valid Long id_agendamento){
-        return scheduleRepository.findById(id_agendamento).isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                :ResponseEntity.ok(scheduleRepository.findById(id_agendamento));
+        return scheduleService.getById(id_agendamento);
     }
 
-    @PostMapping()
+    @PostMapping
     @Transactional
-    public ResponseEntity<Schedule> createSchedule(@RequestBody @Valid ScheduleDTO schedule, UriComponentsBuilder uriBuilder){
-        var uri =uriBuilder.path("/dasa").buildAndExpand(scheduleRepository.save(new Schedule(schedule))).toUri();
-        return ResponseEntity.created(uri).body(new Schedule(schedule));
+    public ResponseEntity<Schedule> createSchedule(@RequestBody @Valid ScheduleDTO schedule, @NotNull UriComponentsBuilder uriBuilder){
+        return scheduleService.createSchedule(schedule,uriBuilder);
     }
 
     @PutMapping("/{id_agendamento}")
     @Transactional
-    public ResponseEntity addExam(@PathVariable @RequestParam Long id_agendamento,@RequestBody ExamDTO exame, UriComponentsBuilder uriBuilder){
-        var schedule = scheduleRepository.findById(id_agendamento).get();
-        var uri = uriBuilder.path("/dasa/{id_agendamento}").buildAndExpand (scheduleRepository.findById(id_agendamento).get()).toUri();
-        if(examRepository.existsById(exame.id_exame())){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }else{
-            schedule.addExame(addIntoExamList(exame));
-            updateValue(schedule);
-            return ResponseEntity.created(uri).body(scheduleRepository.findById(id_agendamento));
-        }
+    public ResponseEntity addExam(@PathVariable @RequestParam Long idAgendamento, @RequestBody ExamDTO exame, UriComponentsBuilder uriBuilder){
+        return examService.addExam(idAgendamento,exame,uriBuilder);
     }
 
     @DeleteMapping("/{id_agendamento}")
     @Transactional
-    public ResponseEntity deleteExam(@PathVariable @RequestParam Long id_agendamento,@RequestBody ExamDTO exame, UriComponentsBuilder uriBuilder){
-        var schedule = scheduleRepository.findById(id_agendamento).get();
-        var uri = uriBuilder.path("/dasa/{id_agendamento}").buildAndExpand (scheduleRepository.findById(id_agendamento).get()).toUri();
-        if(examRepository.existsById(exame.id_exame())){
-            schedule.deleteExame(exame);
-            examRepository.deleteById(new Exam(exame).getId_exame());
-            updateValue(schedule);
-            return ResponseEntity.created(uri).body(scheduleRepository.findById(id_agendamento));
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    private ExamDTO addIntoExamList(@RequestBody @Valid ExamDTO exam){
-        examRepository.save(new Exam(exam));
-        return exam;
-    }
-
-    private void updateValue(Schedule schedule){
-        schedule.setPagamento(schedule.updateTotalValue());
+    public ResponseEntity deleteExam(@PathVariable @RequestParam Long idAgendamento,@RequestBody ExamDTO exame, UriComponentsBuilder uriBuilder){
+        return scheduleService.deleteExam(idAgendamento,exame,uriBuilder);
     }
 }

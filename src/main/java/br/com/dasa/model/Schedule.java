@@ -19,7 +19,7 @@ import java.util.Collection;
 @Embeddable
 public class Schedule {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_agendamento;
+    private Long idAgendamento;
     @OneToMany(cascade = CascadeType.MERGE)
     @PrimaryKeyJoinColumn()
     private Collection<Exam> exames = new ArrayList<>();
@@ -29,10 +29,10 @@ public class Schedule {
 
     @JsonCreator
     public Schedule(ScheduleDTO scheduleDTO){
-        this.id_agendamento = scheduleDTO.id_agendamento();
-        this.pagamento = scheduleDTO.pagamento();
-        exames.add(scheduleDTO.exames());
-        pagamento.setValor_total(updateTotalValue().getValor_total());
+        this.idAgendamento = scheduleDTO.getIdAgendamento();
+        this.pagamento = scheduleDTO.getPagamento();
+        exames.add(scheduleDTO.getExames());
+        pagamento.setValorTotal(updateTotalValueAndType().getValorTotal());
     }
 
     public Schedule(){}
@@ -45,8 +45,9 @@ public class Schedule {
         exames.remove(new Exam(exame));
     }
 
-    public Payment updateTotalValue() {
-        pagamento.setValor_total(exames.stream().map(Exam::getValor_exame).reduce(0d,(exam1, exam2) ->exam1+exam2));
+    public Payment updateTotalValueAndType() {
+        pagamento.setValorTotal(exames.stream().map(Exam::getValorExame).reduce(0d,(exam1, exam2) ->exam1+exam2));
+        pagamento.setTipoPagamento(getPagamento().getTipoPagamento());
         return pagamento;
     }
 }
