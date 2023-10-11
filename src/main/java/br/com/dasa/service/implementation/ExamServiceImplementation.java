@@ -40,7 +40,7 @@ public class ExamServiceImplementation implements ExamService {
     }
 
     @Override
-    public ExamDTO addIntoExamList(@RequestBody @Valid ExamDTO exam){
+    public ExamDTO addIntoExamList(ExamDTO exam){
         examRepository.save(new Exam(exam));
         return exam;
     }

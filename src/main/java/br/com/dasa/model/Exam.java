@@ -6,12 +6,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity(name = "exames")
-@Getter
-@Setter
+@Data
 public class Exam {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idExame;

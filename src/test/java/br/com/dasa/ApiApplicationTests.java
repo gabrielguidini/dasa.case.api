@@ -34,7 +34,7 @@ class ApiApplicationTests {
 				))
 		));
 		//act
-		Payment expect = schedule.updateTotalValue();
+		Payment expect = schedule.updateTotalValueAndType();
 		//asert
 		Assertions.assertEquals(schedule.getPagamento(),expect);
 	}

@@ -16,5 +16,5 @@ public interface ScheduleService {
     ResponseEntity<Optional<Schedule>> getById(Long id_agendamento);
     ResponseEntity<Schedule> createSchedule(ScheduleDTO schedule,UriComponentsBuilder uriBuilder);
     void updateValueAndType(Schedule schedule);
-    ResponseEntity deleteExam(Long id_agendamento,ExamDTO exame, UriComponentsBuilder uriBuilder);
+    ResponseEntity deleteExam(Long id_agendamento, ExamDTO exame, UriComponentsBuilder uriBuilder);
 }
