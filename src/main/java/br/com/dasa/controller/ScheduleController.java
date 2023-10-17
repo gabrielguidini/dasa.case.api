@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/dasa")
-public class SchduleController {
+public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
     @Autowired

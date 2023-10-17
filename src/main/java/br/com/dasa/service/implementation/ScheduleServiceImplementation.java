@@ -8,7 +8,6 @@ import br.com.dasa.repository.ScheduleRepository;
 import br.com.dasa.service.ExamService;
 import br.com.dasa.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,13 +24,13 @@ public class ScheduleServiceImplementation implements ScheduleService {
 
     @Override
     public ResponseEntity<List<Schedule>> getAllSchedules(){
-        return scheduleRepository.findAll().isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                :ResponseEntity.ok(scheduleRepository.findAll()) ;
+        return scheduleRepository.findAll().isEmpty() ? ResponseEntity.notFound().build()
+                :ResponseEntity.ok(scheduleRepository.findAll());
     }
 
     @Override
     public ResponseEntity<Optional<Schedule>> getById(Long id_agendamento){
-        return scheduleRepository.findById(id_agendamento).isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+        return scheduleRepository.findById(id_agendamento).isEmpty() ? ResponseEntity.notFound().build()
                 :ResponseEntity.ok(scheduleRepository.findById(id_agendamento));
     }
 
@@ -52,13 +51,12 @@ public class ScheduleServiceImplementation implements ScheduleService {
         var uri = uriBuilder.path("/dasa/{id_agendamento}").buildAndExpand (scheduleRepository.findById(idAgendamento).get()).toUri();
         if(examService.getExamById(exame.getIdExame())){
             schedule.removeExamFromList(new Exam(exame));
-
             examService.deleteById(exame.getIdExame());
             updateValueAndType(schedule);
             return ResponseEntity.created(uri).body(scheduleRepository.findById(idAgendamento));
         }
         else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 }

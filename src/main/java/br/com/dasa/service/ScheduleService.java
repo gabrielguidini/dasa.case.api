@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ScheduleService {
     ResponseEntity<List<Schedule>> getAllSchedules();
     ResponseEntity<Optional<Schedule>> getById(Long id_agendamento);
-    ResponseEntity<Schedule> createSchedule(ScheduleDTO schedule,UriComponentsBuilder uriBuilder);
+    ResponseEntity<Schedule> createSchedule(ScheduleDTO schedule, UriComponentsBuilder uriBuilder);
     void updateValueAndType(Schedule schedule);
     ResponseEntity deleteExam(Long id_agendamento, ExamDTO exame, UriComponentsBuilder uriBuilder);
 }

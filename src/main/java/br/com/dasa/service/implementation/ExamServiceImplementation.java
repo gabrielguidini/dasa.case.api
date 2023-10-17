@@ -22,15 +22,15 @@ public class ExamServiceImplementation implements ExamService {
     private ScheduleRepository scheduleRepository;
 
     @Override
-    public ResponseEntity addExam(Long id_agendamento,ExamDTO exame, UriComponentsBuilder uriBuilder) {
-        var schedule = scheduleRepository.findById(id_agendamento).get();
-        var uri = uriBuilder.path("/dasa/{id_agendamento}").buildAndExpand(scheduleRepository.findById(id_agendamento).get()).toUri();
+    public ResponseEntity addExam(Long idAgendamento,ExamDTO exame, UriComponentsBuilder uriBuilder) {
+        var schedule = scheduleRepository.findById(idAgendamento).get();
+        var uri = uriBuilder.path("/dasa/{id_agendamento}").buildAndExpand(scheduleRepository.findById(idAgendamento).get()).toUri();
         if (examRepository.existsById(exame.getIdExame())) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         } else {
             schedule.addExame(addIntoExamList(exame));
             updateValue(schedule);
-            return ResponseEntity.created(uri).body(scheduleRepository.findById(id_agendamento));
+            return ResponseEntity.created(uri).body(scheduleRepository.findById(idAgendamento));
         }
     }
 
