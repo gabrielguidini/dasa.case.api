@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ScheduleServiceImplementation implements ScheduleService {
+public class IScheduleService implements ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired

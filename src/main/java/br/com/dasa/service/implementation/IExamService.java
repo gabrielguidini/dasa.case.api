@@ -6,16 +6,14 @@ import br.com.dasa.model.Schedule;
 import br.com.dasa.repository.ExamRepository;
 import br.com.dasa.repository.ScheduleRepository;
 import br.com.dasa.service.ExamService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
-public class ExamServiceImplementation implements ExamService {
+public class IExamService implements ExamService {
     @Autowired
     private ExamRepository examRepository;
     @Autowired
