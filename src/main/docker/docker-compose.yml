@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    image: 'postgres:latest'
+    image: 'casedasa.azurecr.io/postgres:latest'
     container_name: postgres
     environment:
       - POSTGRES_USER=postgres
@@ -14,10 +14,9 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   case-dasa:
-    image: 'gabrielguidini/case.dasa.api:latest'
+    image: 'casedasa.azurecr.io/casedasa:latest'
     build:
       context: /home/guidini/Desktop/case/
-    container_name: case.dasa.api
     depends_on:
       - postgres
     environment:
@@ -30,3 +29,7 @@ services:
 
 volumes:
   postgres-data:
+    driver: azure_file
+    driver_opts:
+        share_name: postgresql
+        storage_account_name: psqlcaseapi

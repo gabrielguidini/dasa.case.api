@@ -1,4 +1,5 @@
 FROM openjdk:17
+FROM postgres
 WORKDIR /case
 COPY build/libs/case-0.5.jar .
 EXPOSE 8080
