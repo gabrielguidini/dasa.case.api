@@ -29,7 +29,7 @@ services:
 
 volumes:
   postgres-data:
-    driver: azure_file
-    driver_opts:
-        share_name: postgresql
-        storage_account_name: psqlcaseapi
+#    driver: azure_file
+#    driver_opts:
+#        share_name: postgresql
+#        storage_account_name: psqlcaseapi
