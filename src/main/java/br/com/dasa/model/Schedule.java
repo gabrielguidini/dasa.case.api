@@ -5,23 +5,26 @@ import br.com.dasa.dto.ExamDTO;
 import br.com.dasa.dto.ScheduleDTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 @Entity(name = "agendamento")
 @Getter
 @Setter
+@Builder
 @Embeddable
 public class Schedule {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAgendamento;
     @OneToMany(cascade = CascadeType.MERGE)
     @PrimaryKeyJoinColumn()
-    private Collection<Exam> exames = new ArrayList<>();
+    private List<Exam> exames = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn()
     private Payment pagamento;
@@ -30,20 +33,26 @@ public class Schedule {
     public Schedule(ScheduleDTO scheduleDTO){
         this.idAgendamento = scheduleDTO.getIdAgendamento();
         this.pagamento = scheduleDTO.getPagamento();
-        exames.add(scheduleDTO.getExames());
-        pagamento.setValorTotal(updateTotalValueAndType().getValorTotal());
+        exames.add(scheduleDTO.getExames().iterator().next());
+        pagamento.setValorTotal(pagamento.getValorTotal());
     }
 
     public Schedule(){}
 
-    public void addExame(ExamDTO exame) {
-        exames.add(new Exam(exame));
+    public void addExame(Exam exame) {
+        exames.add(exame);
     }
 
-    public Payment updateTotalValueAndType() {
-        pagamento.setValorTotal(exames.stream().map(Exam::getValorExame).reduce(0d,(exam1, exam2) ->exam1+exam2));
-        pagamento.setTipoPagamento(getPagamento().getTipoPagamento());
-        return pagamento;
+//    public Payment updateTotalValueAndType() {
+//        pagamento.setValorTotal(exames.stream().map(Exam::getValorExame).reduce(0d, Double::sum));
+//        pagamento.setTipoPagamento(getPagamento().getTipoPagamento());
+//        return pagamento;
+//    }
+
+    public Schedule(Long idAgendamento, List<Exam> exames, Payment pagamento) {
+        this.idAgendamento = idAgendamento;
+        this.exames = exames;
+        this.pagamento = pagamento;
     }
 
     public void removeExamFromList(Exam exam) {

@@ -1,17 +1,18 @@
 package br.com.dasa.model;
 
 import br.com.dasa.dto.PaymentDTO;
+import br.com.dasa.model.enums.ExamEnum;
 import br.com.dasa.model.enums.PaymentEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity(name = "pagamento")
 @Data
+@Builder
 public class Payment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPagamento;
@@ -26,6 +27,12 @@ public class Payment {
         this.idPagamento = paymentDTO.getIdPagamento();
         this.tipoPagamento = paymentDTO.getTipoPagamento();
         this.valorTotal = paymentDTO.getValorTotal();
+    }
+
+    public Payment(Long idPagamento, Double valorTotal, PaymentEnum tipoPagamento) {
+        this.idPagamento = idPagamento;
+        this.valorTotal = valorTotal;
+        this.tipoPagamento = tipoPagamento;
     }
 
     public Payment(){}

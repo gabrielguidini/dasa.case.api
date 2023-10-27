@@ -6,14 +6,20 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
 @Entity(name = "exames")
 @Data
+@Builder
 public class Exam {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idExame;
@@ -33,6 +39,13 @@ public class Exam {
         this.tipoExame = examDTO.getTipoExame();
         this.valorExame = examDTO.getValorExame();
         setValorExame(checkTypeValue(tipoExame));
+    }
+
+    public Exam(Long idExame, String nomeExame, ExamEnum tipoExame, Double valorExame) {
+        this.idExame = idExame;
+        this.nomeExame = nomeExame;
+        this.tipoExame = tipoExame;
+        this.valorExame = valorExame;
     }
 
     public Exam() {}

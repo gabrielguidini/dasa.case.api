@@ -1,18 +1,16 @@
 package br.com.dasa.controller;
 
-import br.com.dasa.dto.ExamDTO;
-import br.com.dasa.dto.PaymentDTO;
+import br.com.dasa.arrange.ScheduleArrange;
 import br.com.dasa.dto.ScheduleDTO;
-import br.com.dasa.model.Exam;
-import br.com.dasa.model.Payment;
-import br.com.dasa.model.enums.ExamEnum;
-import br.com.dasa.model.enums.PaymentEnum;
-import br.com.dasa.service.ExamService;
-import br.com.dasa.service.ScheduleService;
+import br.com.dasa.model.Schedule;
+import br.com.dasa.repository.ExamRepository;
+import br.com.dasa.repository.ScheduleRepository;
+import br.com.dasa.service.implementation.ExamService;
+import br.com.dasa.service.implementation.ScheduleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
@@ -37,48 +35,20 @@ public class ScheduleControllerTest {
     @Autowired private ObjectMapper mapper;
     @MockBean private ScheduleService scheduleService;
     @MockBean private ExamService examService;
+    @Mock private ScheduleRepository scheduleRepository;
+    @Mock private ExamRepository examRepository;
     private static final String END_POINT_PATH = "/dasa";
-    private ScheduleDTO schedule = new ScheduleDTO(
-            1L,
-            new Exam(new ExamDTO(
-                    1L,
-                    "string",
-                    ExamEnum.IMAGEM,
-                    200d
-            )),
-            new Payment(new PaymentDTO(
-                    1L,
-                    PaymentEnum.DEBITO,
-                    200d
-            ))
-    );
 
-    @BeforeAll
-    static void setup(){
-
-    }
     @Test
     void create_a_schedule_should_return_200() throws Exception {
-        String json = """
-                {
-                  "idAgendamento": 1,
-                  "exames": {
-                    "idExame": 1,
-                    "nomeExame": "string",
-                    "tipoExame": "IMAGEM",
-                    "valorExame": 0
-                  },
-                  "pagamento": {
-                    "idPagamento": 1,
-                    "valorTotal": 0,
-                    "tipoPagamento": "DINHEIRO"
-                  }
-                }
-                """;
-        scheduleService.createSchedule(schedule,UriComponentsBuilder.fromUriString(END_POINT_PATH));
+        Schedule schedule = ScheduleArrange.getValidSchedule();
+        scheduleService.createSchedule(new ScheduleDTO(schedule.getIdAgendamento(),
+                                                       schedule.getExames(),
+                                                       schedule.getPagamento())
+                ,UriComponentsBuilder.fromUriString(END_POINT_PATH));
+
         var response = mvc.perform(post(END_POINT_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json)
         ).andReturn().getResponse();
         Assertions.assertEquals(200,response.getStatus());
     }

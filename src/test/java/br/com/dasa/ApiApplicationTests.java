@@ -1,79 +1,76 @@
 package br.com.dasa;
 
-import br.com.dasa.dto.ExamDTO;
-import br.com.dasa.dto.PaymentDTO;
-import br.com.dasa.dto.ScheduleDTO;
+import br.com.dasa.arrange.ExamArrange;
+import br.com.dasa.arrange.ScheduleArrange;
 import br.com.dasa.model.Exam;
-import br.com.dasa.model.Payment;
 import br.com.dasa.model.Schedule;
-import br.com.dasa.model.enums.ExamEnum;
-import br.com.dasa.model.enums.PaymentEnum;
-import br.com.dasa.service.ScheduleService;
-import org.junit.jupiter.api.Assertions;
+import br.com.dasa.repository.ExamRepository;
+import br.com.dasa.repository.ScheduleRepository;
+import br.com.dasa.service.implementation.ExamService;
+import br.com.dasa.service.implementation.ScheduleService;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class ApiApplicationTests {
-	@MockBean
+	@InjectMocks
 	private ScheduleService scheduleService;
-	private Schedule schedule = new Schedule(new ScheduleDTO(
-			1L,
-			new Exam(new ExamDTO(
-					1L,
-					"string",
-					ExamEnum.IMAGEM,
-					200d
-			)),
-			new Payment(new PaymentDTO(
-					1L,
-					PaymentEnum.DEBITO,
-					200d
-			))
-	));
+	@MockBean
+	private ExamService examService;
+	@Mock
+	private ExamRepository examRepository;
+	@Mock
+	private ScheduleRepository scheduleRepository;
 
 	@Test
-	void add_exam_into_a_schedule() {
-		ExamDTO examDTO = new ExamDTO(
-				2L,
-				"testing",
-				ExamEnum.COLETA,
-				50d
-		);
-		schedule.addExame(examDTO);
+	void addExamIntoSchedule() {
+		//arrange
+		Schedule schedule = ScheduleArrange.getValidSchedule();
+		Exam exam =  ExamArrange.getValidExam();
+		schedule.addExame(exam);
+		scheduleService.updateValueAndType(schedule);
+		//act
 		boolean existsCheck = false;
-		for (Exam exam : schedule.getExames()) {
-			if (exam.getIdExame().equals(examDTO.getIdExame())) {
+		for (Exam exam1 : schedule.getExames()) {
+			if (exam1.getIdExame().equals(schedule.getExames().iterator().next().getIdExame())) {
 				existsCheck = true;
 			}
 		}
-		Assertions.assertTrue(existsCheck);
+		//assert
+		assertTrue(existsCheck);
 	}
+
 	@Test
-	void remove_exam_from_a_schedule(){
-		ExamDTO examDTO = new ExamDTO(
-				2L,
-				"testing",
-				ExamEnum.COLETA,
-				50d
-		);
-		schedule.removeExamFromList(new Exam(examDTO));
-		Assertions.assertEquals(2L,examDTO.getIdExame());
-	}
-	@Test
-	void payment_total_expect(){
-		//action
-		ExamDTO examDTO = new ExamDTO(
-				2L,
-				"testing",
-				ExamEnum.COLETA,
-				50d
-		);
+	void removeExamFromSchedule(){
+		//arrange
+		Schedule schedule = ScheduleArrange.getValidSchedule();
+		Exam exam =  ExamArrange.getValidExam();
+		schedule.addExame(exam);
+		scheduleService.updateValueAndType(schedule);
+		schedule.removeExamFromList(exam);
+		scheduleService.updateValueAndType(schedule);
 		//act
-		schedule.addExame(examDTO);
-		Payment expect = schedule.updateTotalValueAndType();
-		//asert
-		Assertions.assertEquals(250d,expect.getValorTotal());
+		boolean existsCheck = exam.getIdExame().equals(schedule.getExames().iterator().next().getIdExame());
+        //assert
+		assertFalse(existsCheck);
+	}
+
+	@Test
+	void updatingPaymentValueAndTypeInSchedule(){
+		//arrange
+		Schedule schedule = ScheduleArrange.getValidSchedule();
+		Exam exam =  ExamArrange.getValidExam();
+		schedule.addExame(exam);
+		scheduleService.updateValueAndType(schedule);
+		//act
+		var response = schedule.getExames().stream().map(Exam::getValorExame).reduce(0d, Double::sum);
+		System.out.println(response);
+		//assert
+		assertEquals(response,schedule.getPagamento().getValorTotal());
 	}
 }
