@@ -2,7 +2,6 @@ package br.com.dasa.service.implementation;
 
 import br.com.dasa.dto.ExamDTO;
 import br.com.dasa.model.Exam;
-import br.com.dasa.model.Schedule;
 import br.com.dasa.repository.ExamRepository;
 import br.com.dasa.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ public class ExamService {
     private ExamRepository examRepository;
     @Autowired
     private ScheduleRepository scheduleRepository;
-    @Autowired
-    private ScheduleService scheduleService;
 
     public ResponseEntity addExam(Long idAgendamento,ExamDTO exame, UriComponentsBuilder uriBuilder) {
         var schedule = scheduleRepository.findById(idAgendamento).get();
@@ -26,9 +23,9 @@ public class ExamService {
         if (examRepository.existsById(exame.getIdExame())) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         } else {
-            schedule.addExame(new Exam(exame));
-            addIntoExamList(exame);
-            updateValue(schedule);
+            schedule.addExameIntoSchedule(new Exam(exame));
+            saveExam(exame);
+            schedule.getPagamento().setValorTotal(schedule.getExames().stream().map(Exam::getValorExame).reduce(0d, Double::sum ));
             return ResponseEntity.created(uri).body(scheduleRepository.findById(idAgendamento));
         }
     }
@@ -37,12 +34,8 @@ public class ExamService {
         return examRepository.findById(id).isPresent();
     }
 
-    public void addIntoExamList(ExamDTO exam){
+    public void saveExam(ExamDTO exam){
         examRepository.save(new Exam(exam));
-    }
-
-    public void updateValue(Schedule schedule){
-        scheduleService.updateValueAndType(schedule);
     }
 
     public void deleteById(Long idExame) {

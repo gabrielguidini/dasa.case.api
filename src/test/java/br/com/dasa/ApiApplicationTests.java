@@ -32,7 +32,7 @@ class ApiApplicationTests {
 		//arrange
 		Schedule schedule = ScheduleArrange.getValidSchedule();
 		Exam exam =  ExamArrange.getValidExam();
-		schedule.addExame(exam);
+		schedule.addExameIntoSchedule(exam);
 		scheduleService.updateValueAndType(schedule);
 		//act
 		boolean existsCheck = false;
@@ -50,7 +50,7 @@ class ApiApplicationTests {
 		//arrange
 		Schedule schedule = ScheduleArrange.getValidSchedule();
 		Exam exam =  ExamArrange.getValidExam();
-		schedule.addExame(exam);
+		schedule.addExameIntoSchedule(exam);
 		scheduleService.updateValueAndType(schedule);
 		schedule.removeExamFromList(exam);
 		scheduleService.updateValueAndType(schedule);
@@ -65,7 +65,7 @@ class ApiApplicationTests {
 		//arrange
 		Schedule schedule = ScheduleArrange.getValidSchedule();
 		Exam exam =  ExamArrange.getValidExam();
-		schedule.addExame(exam);
+		schedule.addExameIntoSchedule(exam);
 		scheduleService.updateValueAndType(schedule);
 		//act
 		var response = schedule.getExames().stream().map(Exam::getValorExame).reduce(0d, Double::sum);

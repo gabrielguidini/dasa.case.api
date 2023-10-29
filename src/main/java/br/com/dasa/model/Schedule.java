@@ -1,15 +1,12 @@
 package br.com.dasa.model;
 
 
-import br.com.dasa.dto.ExamDTO;
 import br.com.dasa.dto.ScheduleDTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +36,9 @@ public class Schedule {
 
     public Schedule(){}
 
-    public void addExame(Exam exame) {
+    public void addExameIntoSchedule(Exam exame) {
         exames.add(exame);
     }
-
-//    public Payment updateTotalValueAndType() {
-//        pagamento.setValorTotal(exames.stream().map(Exam::getValorExame).reduce(0d, Double::sum));
-//        pagamento.setTipoPagamento(getPagamento().getTipoPagamento());
-//        return pagamento;
-//    }
 
     public Schedule(Long idAgendamento, List<Exam> exames, Payment pagamento) {
         this.idAgendamento = idAgendamento;

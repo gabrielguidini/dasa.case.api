@@ -41,6 +41,9 @@ public class ScheduleControllerTest {
 
     @Test
     void create_a_schedule_should_return_200() throws Exception {
+        String json = """
+                
+                """;
         Schedule schedule = ScheduleArrange.getValidSchedule();
         scheduleService.createSchedule(new ScheduleDTO(schedule.getIdAgendamento(),
                                                        schedule.getExames(),
