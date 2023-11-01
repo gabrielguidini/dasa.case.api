@@ -29,9 +29,9 @@ public class ScheduleController {
         return scheduleService.getAllSchedules();
     }
 
-    @GetMapping("/{id_agendamento}")
-    public ResponseEntity<Optional<Schedule>> getById(@PathVariable @Valid Long id_agendamento){
-        return scheduleService.getById(id_agendamento);
+    @GetMapping("/{idAgendamento}")
+    public ResponseEntity<Optional<Schedule>> getById(@PathVariable @Valid Long idAgendamento){
+        return scheduleService.getById(idAgendamento);
     }
 
     @PostMapping
@@ -40,15 +40,15 @@ public class ScheduleController {
         return scheduleService.createSchedule(schedule,uriBuilder);
     }
 
-    @PutMapping("/{id_agendamento}")
+    @PutMapping("/{idAgendamento}")
     @Transactional
-    public ResponseEntity addExam(@PathVariable @RequestParam Long idAgendamento, @RequestBody ExamDTO exame, UriComponentsBuilder uriBuilder){
-        return examService.addExam(idAgendamento,exame,uriBuilder);
+    public ResponseEntity<?> addExam(@PathVariable @RequestParam Long idAgendamento, @RequestBody ExamDTO exam, UriComponentsBuilder uriBuilder){
+        return examService.addExam(idAgendamento,exam,uriBuilder);
     }
 
-    @DeleteMapping("/{id_agendamento}")
+    @DeleteMapping("/{idAgendamento}")
     @Transactional
-    public ResponseEntity deleteExam(@PathVariable @RequestParam Long idAgendamento,@RequestBody ExamDTO exame, UriComponentsBuilder uriBuilder){
-        return scheduleService.deleteExam(idAgendamento,exame,uriBuilder);
+    public ResponseEntity<?> deleteExam(@PathVariable @RequestParam Long idAgendamento,@RequestBody ExamDTO exam, UriComponentsBuilder uriBuilder){
+        return scheduleService.deleteExam(idAgendamento,exam,uriBuilder);
     }
 }

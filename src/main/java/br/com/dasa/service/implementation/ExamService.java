@@ -17,7 +17,7 @@ public class ExamService {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    public ResponseEntity addExam(Long idAgendamento,ExamDTO exame, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> addExam(Long idAgendamento,ExamDTO exame, UriComponentsBuilder uriBuilder) {
         var schedule = scheduleRepository.findById(idAgendamento).get();
         var uri = uriBuilder.path("/dasa/{id_agendamento}").buildAndExpand(scheduleRepository.findById(idAgendamento).get()).toUri();
         if (examRepository.existsById(exame.getIdExame())) {

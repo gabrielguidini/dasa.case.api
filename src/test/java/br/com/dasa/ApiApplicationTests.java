@@ -2,6 +2,7 @@ package br.com.dasa;
 
 import br.com.dasa.arrange.ExamArrange;
 import br.com.dasa.arrange.ScheduleArrange;
+import br.com.dasa.dto.ScheduleDTO;
 import br.com.dasa.model.Exam;
 import br.com.dasa.model.Schedule;
 import br.com.dasa.repository.ExamRepository;
@@ -9,14 +10,19 @@ import br.com.dasa.repository.ScheduleRepository;
 import br.com.dasa.service.implementation.ExamService;
 import br.com.dasa.service.implementation.ScheduleService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class ApiApplicationTests {
 	@InjectMocks
 	private ScheduleService scheduleService;
@@ -26,6 +32,7 @@ class ApiApplicationTests {
 	private ExamRepository examRepository;
 	@Mock
 	private ScheduleRepository scheduleRepository;
+	private final String END_POINT_PATH = "/dasa";
 
 	@Test
 	void addExamIntoSchedule() {
@@ -69,8 +76,21 @@ class ApiApplicationTests {
 		scheduleService.updateValueAndType(schedule);
 		//act
 		var response = schedule.getExames().stream().map(Exam::getValorExame).reduce(0d, Double::sum);
-		System.out.println(response);
 		//assert
 		assertEquals(response,schedule.getPagamento().getValorTotal());
+	}
+
+	//service methods tests
+	@Test
+	void creatingSchedule(){
+		//arrange
+		Schedule schedule = ScheduleArrange.getValidSchedule();
+		//act
+		var actualResponse = scheduleService.createSchedule(new ScheduleDTO(schedule.getIdAgendamento()
+										,schedule.getExames()
+										,schedule.getPagamento())
+				, UriComponentsBuilder.fromUriString(END_POINT_PATH)).getStatusCode();
+		//assert
+		assertTrue(actualResponse.isSameCodeAs(HttpStatusCode.valueOf(201)));
 	}
 }
