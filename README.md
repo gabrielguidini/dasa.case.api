@@ -1,7 +1,3 @@
-##DASA CASE
-This project is about creating a API based simple system that creates a schedule inside a Clinical Lab that needs to make an appointment to perform the list of exmas.
-Inside and schedule you can create, delete, insert and edit an exam, while having only one schedule_id.
-The payment is automatically updated when you delete or insert an exam.
 
 The stack in this API is:
 Java 17 LTS with Spring
