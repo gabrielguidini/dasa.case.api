@@ -2,6 +2,7 @@ package br.com.dasa;
 
 import br.com.dasa.arrange.ExamArrange;
 import br.com.dasa.arrange.ScheduleArrange;
+import br.com.dasa.dto.ExamDTO;
 import br.com.dasa.dto.ScheduleDTO;
 import br.com.dasa.model.Exam;
 import br.com.dasa.model.Schedule;
@@ -18,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -93,4 +96,5 @@ class ApiApplicationTests {
 		//assert
 		assertTrue(actualResponse.isSameCodeAs(HttpStatusCode.valueOf(201)));
 	}
+
 }

@@ -4,9 +4,7 @@ package br.com.dasa.model;
 import br.com.dasa.dto.ScheduleDTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +14,8 @@ import java.util.List;
 @Setter
 @Builder
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public class Schedule {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAgendamento;
@@ -34,16 +34,8 @@ public class Schedule {
         pagamento.setValorTotal(pagamento.getValorTotal());
     }
 
-    public Schedule(){}
-
     public void addExameIntoSchedule(Exam exame) {
         exames.add(exame);
-    }
-
-    public Schedule(Long idAgendamento, List<Exam> exames, Payment pagamento) {
-        this.idAgendamento = idAgendamento;
-        this.exames = exames;
-        this.pagamento = pagamento;
     }
 
     public void removeExamFromList(Exam exam) {
