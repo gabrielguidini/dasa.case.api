@@ -1,3 +1,15 @@
+
+The stack in this API is:
+Java 17 LTS with Spring
+Gradle
+Docker
+OpenAPI (Swagger)
+Azure Container Registry to upload the docker image
+
+To access the API i've used:
+Azure App Service
+
+
 ```mermaid
 classDiagram
     class Schedule{

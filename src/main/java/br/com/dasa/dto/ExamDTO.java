@@ -4,12 +4,15 @@ import br.com.dasa.model.enums.ExamEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-public class ExamDTO{
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
+public class ExamDTO {
     @NotNull
     private Long idExame;
     @NotBlank
@@ -19,12 +22,4 @@ public class ExamDTO{
     @NotNull
     private Double valorExame;
 
-    public ExamDTO(Long idExame, String nomeExame, ExamEnum tipoExame, Double valorExame) {
-        this.idExame = idExame;
-        this.nomeExame = nomeExame;
-        this.tipoExame = tipoExame;
-        this.valorExame = valorExame;
-    }
-
-    public ExamDTO() {}
 }

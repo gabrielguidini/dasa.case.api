@@ -30,8 +30,8 @@ public class ExamService {
         }
     }
 
-    public Boolean getExamById(Long id){
-        return examRepository.findById(id).isPresent();
+    public Boolean getExamById(Long idExame){
+        return examRepository.findById(idExame).isPresent();
     }
 
     public void saveExam(ExamDTO exam){
