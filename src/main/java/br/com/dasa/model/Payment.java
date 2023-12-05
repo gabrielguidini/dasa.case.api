@@ -7,12 +7,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "pagamento")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPagamento;
@@ -29,11 +33,4 @@ public class Payment {
         this.valorTotal = paymentDTO.getValorTotal();
     }
 
-    public Payment(Long idPagamento, Double valorTotal, PaymentEnum tipoPagamento) {
-        this.idPagamento = idPagamento;
-        this.valorTotal = valorTotal;
-        this.tipoPagamento = tipoPagamento;
-    }
-
-    public Payment(){}
 }
