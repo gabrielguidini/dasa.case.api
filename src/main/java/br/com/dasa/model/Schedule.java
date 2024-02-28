@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "agendamento")
 @Getter
@@ -17,8 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Schedule {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idAgendamento;
+    @Id @Builder.Default
+    private UUID idAgendamento = UUID.randomUUID();;
     @OneToMany(cascade = CascadeType.MERGE)
     @PrimaryKeyJoinColumn()
     private List<Exam> exames = new ArrayList<>();

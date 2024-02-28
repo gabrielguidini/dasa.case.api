@@ -13,6 +13,7 @@ import org.hibernate.annotations.CascadeType;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity(name = "exames")
 @Data
@@ -20,8 +21,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Exam {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idExame;
+    @Id @Builder.Default
+    private UUID idExame = UUID.randomUUID();
     @NotEmpty
     private String nomeExame;
     @NotEmpty

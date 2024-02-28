@@ -1,7 +1,7 @@
 package br.com.dasa.controller;
 
-import br.com.dasa.service.implementation.ExamService;
-import br.com.dasa.service.implementation.ScheduleService;
+import br.com.dasa.service.ExamService;
+import br.com.dasa.service.ScheduleService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

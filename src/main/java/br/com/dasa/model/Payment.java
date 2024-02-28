@@ -12,14 +12,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity(name = "pagamento")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Payment {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPagamento;
+    @Id @Builder.Default
+    private UUID idPagamento = UUID.randomUUID();
     @NotNull
     private Double valorTotal;
     @NotEmpty

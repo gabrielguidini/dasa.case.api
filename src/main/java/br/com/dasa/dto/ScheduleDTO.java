@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @NotNull
 @Getter
@@ -15,7 +16,7 @@ import java.util.List;
 @Builder
 
 public class ScheduleDTO{
-    private Long idAgendamento;
+    private UUID idAgendamento = UUID.randomUUID();
     private List<Exam> exames;
     private Payment pagamento;
 

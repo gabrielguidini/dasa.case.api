@@ -2,14 +2,13 @@ package br.com.dasa;
 
 import br.com.dasa.arrange.ExamArrange;
 import br.com.dasa.arrange.ScheduleArrange;
-import br.com.dasa.dto.ExamDTO;
 import br.com.dasa.dto.ScheduleDTO;
 import br.com.dasa.model.Exam;
 import br.com.dasa.model.Schedule;
 import br.com.dasa.repository.ExamRepository;
 import br.com.dasa.repository.ScheduleRepository;
-import br.com.dasa.service.implementation.ExamService;
-import br.com.dasa.service.implementation.ScheduleService;
+import br.com.dasa.service.ExamService;
+import br.com.dasa.service.ScheduleService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,7 +16,7 @@ import lombok.*;
 
 public class ExamDTO {
     @NotNull
-    private Long idExame;
+    private UUID idExame = UUID.randomUUID();
     @NotBlank
     private String nomeExame;
     @NotNull

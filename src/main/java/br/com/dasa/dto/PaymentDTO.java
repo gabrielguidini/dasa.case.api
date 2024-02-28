@@ -4,6 +4,8 @@ import br.com.dasa.model.enums.PaymentEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.UUID;
+
 @NotNull
 @Getter
 @Setter
@@ -12,7 +14,7 @@ import lombok.*;
 @Builder
 
 public class PaymentDTO {
-    private Long idPagamento;
+    private UUID idPagamento = UUID.randomUUID();
     private PaymentEnum tipoPagamento;
     private Double valorTotal;
 }
