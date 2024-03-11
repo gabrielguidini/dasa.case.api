@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Entity(name = "pagamento")
+@Entity(name = "payment")
 @Data
 @Builder
 @NoArgsConstructor

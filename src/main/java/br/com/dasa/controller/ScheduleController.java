@@ -5,6 +5,7 @@ import br.com.dasa.dto.ScheduleDTO;
 import br.com.dasa.model.Schedule;
 import br.com.dasa.service.ExamService;
 import br.com.dasa.service.ScheduleService;
+import br.com.dasa.utils.ScheduleUtils;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -41,8 +42,8 @@ public class ScheduleController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Schedule> createSchedule(@RequestBody @Valid ScheduleDTO schedule, @NotNull UriComponentsBuilder uriBuilder){
-        return scheduleService.createSchedule(schedule,uriBuilder);
+    public ResponseEntity<ScheduleDTO> createSchedule(@RequestBody @Valid ScheduleDTO schedule, @NotNull UriComponentsBuilder uriBuilder) throws Exception {
+        return scheduleService.createSchedule(ScheduleUtils.convertDtoToEntity(schedule),uriBuilder);
     }
 
     @PutMapping("/{scheduleId}")

@@ -24,7 +24,13 @@ public class ExamService {
 
     public ResponseEntity<?> addExam(UUID scheduleId, ExamDTO exame, UriComponentsBuilder uriBuilder) {
         var schedule = scheduleRepository.findById(scheduleId).get();
+
+        UUID examId = UUID.randomUUID();
+
+        exame.setIdExame(examId);
+
         var uri = uriBuilder.path("/dasa/{id_agendamento}").buildAndExpand(scheduleRepository.findById(scheduleId).get()).toUri();
+
         if (examRepository.existsById(exame.getIdExame())) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         } else {

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "agendamento")
+@Entity(name = "schedule")
 @Getter
 @Setter
 @Builder
@@ -19,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Schedule {
     @Id @Builder.Default
-    private UUID idAgendamento = UUID.randomUUID();;
+    private UUID idAgendamento = UUID.randomUUID();
     @OneToMany(cascade = CascadeType.MERGE)
     @PrimaryKeyJoinColumn()
     private List<Exam> exames = new ArrayList<>();
